@@ -1,6 +1,17 @@
-yarn-error.log
- /.idea
- _ide_helper.php
- .phpstorm.meta.php
- .DS_Store
- .idea
+# Node modules
+/node_modules
+
+# Laravel
+/vendor
+/public/storage
+/storage/*.key
+
+# IDEs
+.idea/
+.phpstorm.meta.php
+
+# macOS
+.DS_Store
+
+# Logs
+/storage/logs/*.log
