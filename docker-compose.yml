@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    image: php:8.2-fpm
+    container_name: laravel-app
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8000:8000"
+    networks:
+      - laravel-network
+    depends_on:
+      - mysql
+    working_dir: /var/www/html
+
+  mysql:
+    image: mysql:8.0
+    container_name: laravel-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - laravel-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: laravel-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80"
+    networks:
+      - laravel-network
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
+    networks:
+      - laravel-network
+
+networks:
+  laravel-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
